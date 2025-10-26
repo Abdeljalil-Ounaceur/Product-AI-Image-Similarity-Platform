@@ -1,79 +1,69 @@
+import boto3
 import random
+import uuid
 from typing import List
 from app.models.schemas import SimilarImage
 
 
-# Mock data - using reliable placeholder images
-MOCK_IMAGES = [
-    {
-        "id": "img_001",
-        "url": "https://picsum.photos/id/237/400/400",  # Dog
-        "thumbnail": "https://picsum.photos/id/237/120/120",
-        "similarity": 0.95,
-        "name": "similar_product_001.jpg"
-    },
-    {
-        "id": "img_002",
-        "url": "https://picsum.photos/id/10/400/400",  # Forest
-        "thumbnail": "https://picsum.photos/id/10/120/120",
-        "similarity": 0.89,
-        "name": "similar_product_002.jpg"
-    },
-    {
-        "id": "img_003",
-        "url": "https://picsum.photos/id/20/400/400",  # Mountain
-        "thumbnail": "https://picsum.photos/id/20/120/120",
-        "similarity": 0.84,
-        "name": "similar_product_003.jpg"
-    },
-    {
-        "id": "img_004",
-        "url": "https://picsum.photos/id/30/400/400",  # Workspace
-        "thumbnail": "https://picsum.photos/id/30/120/120",
-        "similarity": 0.78,
-        "name": "similar_product_004.jpg"
-    },
-    {
-        "id": "img_005",
-        "url": "https://picsum.photos/id/40/400/400",  # Cat
-        "thumbnail": "https://picsum.photos/id/40/120/120",
-        "similarity": 0.72,
-        "name": "similar_product_005.jpg"
-    }
-]
-
-
 class ImageService:
-    """Service layer for image operations - currently using mock data"""
+    """Service layer for image operations using MinIO storage"""
+    
+    def __init__(self):
+        # MinIO connection settings
+        self.s3_client = boto3.client(
+            's3',
+            endpoint_url='http://localhost:9000',
+            aws_access_key_id='minioadmin',
+            aws_secret_access_key='minioadmin',
+            region_name='us-east-1'
+        )
+        self.bucket_name = 'uploads'
+        self.base_url = 'http://localhost:9000'
     
     def save_uploaded_image(self, file, filename: str) -> str:
         """
-        Save uploaded image and return image_id
-        
-        MOCK: Just generates a fake ID without actually saving
-        REAL: Will save to storage (MinIO/S3) and return the storage key
+        Save uploaded image to MinIO and return image_id (the S3 key)
         """
-        # Mock implementation
-        image_id = f"mock_{random.randint(1000, 9999)}"
-        print(f"[MOCK] Saved image: {filename} with ID: {image_id}")
-        return image_id
+        # Generate unique filename to avoid collisions
+        unique_filename = f"{uuid.uuid4()}_{filename}"
+        
+        # Upload to MinIO
+        self.s3_client.put_object(
+            Bucket=self.bucket_name,
+            Key=unique_filename,
+            Body=file,
+            ContentType='image/jpeg'
+        )
+        
+        print(f"[MinIO] Uploaded image: {unique_filename}")
+        return unique_filename
     
     def find_similar_images(self, image_id: str) -> List[SimilarImage]:
         """
-        Find similar images for the given image_id
+        Find similar images - currently returns random 5 from MinIO bucket
         
-        MOCK: Returns shuffled mock data
-        REAL: Will:
-          1. Load image from storage using image_id
-          2. Generate embeddings using ML model
-          3. Search vector database for similar embeddings
-          4. Return top N similar images with scores
+        Later: Will use ML model to find actually similar images
         """
-        # Mock implementation - shuffle and return
-        shuffled = random.sample(MOCK_IMAGES, len(MOCK_IMAGES))
-        similar_images = [SimilarImage(**img) for img in shuffled]
+        # List all images in bucket
+        response = self.s3_client.list_objects_v2(Bucket=self.bucket_name)
+        all_files = [obj['Key'] for obj in response.get('Contents', [])]
         
-        print(f"[MOCK] Found {len(similar_images)} similar images for: {image_id}")
+        # Get random 5 (or less if bucket has fewer images)
+        random_files = random.sample(all_files, min(5, len(all_files)))
+        
+        # Build response with MinIO URLs
+        similar_images = []
+        for i, filename in enumerate(random_files):
+            url = f"{self.base_url}/{self.bucket_name}/{filename}"
+            similar_images.append(SimilarImage(
+                id=filename,
+                url=url,
+                thumbnail=url,  # Same as URL for now
+                similarity=round(0.95 - (i * 0.05), 2),  # Fake similarity scores
+                name=filename
+            ))
+        
+        print(f"[MinIO] Found {len(similar_images)} images for: {image_id}")
         return similar_images
 
 
