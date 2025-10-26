@@ -1,0 +1,33 @@
+.image-list {
+  padding: 2rem;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.image-list h2 {
+  margin: 0 0 1.5rem 0;
+  color: #333;
+}
+
+.images-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.loading {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem 2rem;
+  color: #999;
+  font-size: 1rem;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  border: 2px dashed #ddd;
+}

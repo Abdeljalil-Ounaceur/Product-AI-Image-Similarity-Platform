@@ -1,0 +1,56 @@
+.image-item {
+  position: relative;
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.image-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.rank-badge {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  background-color: #007bff;
+  color: white;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.item-image {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.item-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.similarity-score {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #28a745;
+}
+
+.item-name {
+  font-size: 0.9rem;
+  color: #666;
+}
