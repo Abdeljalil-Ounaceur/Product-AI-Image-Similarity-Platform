@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import UploadSection from './components/UploadSection';
 import ImageList from './components/ImageList';
-// import { uploadAndGetSimilar } from './services/api';
-import { uploadAndGetSimilar } from './services/mockApi';
+import { uploadAndGetSimilar } from './services/api';
+// import { uploadAndGetSimilar } from './services/mockApi';
 import './App.css';
 import './styles/UploadSection.css';
 import './styles/ImageList.css';
