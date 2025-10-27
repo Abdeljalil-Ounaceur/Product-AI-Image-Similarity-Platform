@@ -3,3 +3,9 @@ uvicorn[standard]==0.24.0
 python-multipart==0.0.6
 pydantic==2.5.0
 pydantic_settings
+
+# ML and image processing dependencies
+bentoml>=1.2.0
+numpy>=1.21.0
+pillow>=9.0.0
+requests>=2.25.0

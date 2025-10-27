@@ -3,7 +3,9 @@ import random
 import uuid
 from typing import List
 from app.models.schemas import SimilarImage
+from app.services.embedding_service import embedding_service
 
+MINIO_ENDPOINT_URL = "http://localhost:9000"
 
 class ImageService:
     """Service layer for image operations using MinIO storage"""
@@ -12,7 +14,7 @@ class ImageService:
         # MinIO connection settings
         self.s3_client = boto3.client(
             's3',
-            endpoint_url='http://localhost:9000',
+            endpoint_url=MINIO_ENDPOINT_URL,
             aws_access_key_id='minioadmin',
             aws_secret_access_key='minioadmin',
             region_name='us-east-1'
@@ -44,6 +46,11 @@ class ImageService:
         
         Later: Will use ML model to find actually similar images
         """
+        
+        image_url = f"{self.base_url}/{self.bucket_name}/{image_id}"
+        vector = embedding_service.encode_image_from_url(image_url)
+        print(vector)
+
         # List all images in bucket
         response = self.s3_client.list_objects_v2(Bucket=self.bucket_name)
         all_files = [obj['Key'] for obj in response.get('Contents', [])]
