@@ -44,13 +44,3 @@ class CLIP:
         inputs = self.processor(images=items, return_tensors="pt", padding=True).to(self.device)
         image_embeddings = self.model.get_image_features(**inputs)
         return image_embeddings.cpu().detach().numpy()
-    
-
-    @bentoml.api(batchable=True)
-    async def encode_text(self, items: List[str]) -> np.ndarray:
-        '''
-        generate the 512-d embeddings of the texts
-        '''
-        inputs = self.processor(text=items, return_tensors="pt", padding=True).to(self.device)
-        text_embeddings = self.model.get_text_features(**inputs)
-        return text_embeddings.cpu().detach().numpy()
