@@ -19,7 +19,7 @@ async def upload_image(image: UploadFile = File(...)):
         raise HTTPException(status_code=400, detail="File must be an image")
     
     # Save image and get ID
-    image_id = image_service.save_uploaded_image(
+    image_id = image_service.upload_image(
         file=image.file,
         filename=image.filename
     )
