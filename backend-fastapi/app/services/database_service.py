@@ -26,7 +26,6 @@ class DatabaseService:
                 increment=1,
                 getmode=oracledb.SPOOL_ATTRVAL_WAIT
             )
-            print("Successfully created Oracle connection pool.")
             return pool
         except oracledb.DatabaseError as e:
             print(f"Error creating Oracle connection pool: {e}")
@@ -42,11 +41,29 @@ class DatabaseService:
             with connection.cursor() as cursor:
                 try:
                     cursor.execute(
-                        "INSERT INTO IMAGES (image_id, embedding) VALUES (:1, :2)",
+                        "INSERT INTO USER_UPLOADED_IMAGE_EMBEDDINGS (image_id, embedding) VALUES (:1, :2)",
                         [image_id, embedding_array]
                     )
                     connection.commit()
-                    print(f"Successfully saved embedding for image: {image_id}")
+                except oracledb.DatabaseError as e:
+                    print(f"Database error during insert: {e}")
+                    connection.rollback()
+                    raise
+
+    def save_product_image_embedding(self, image_id: str, embedding: np.ndarray):
+        if not self.pool:
+            raise Exception("Database connection pool is not available.")
+
+        embedding_array = array.array("f", embedding.flatten())
+        
+        with self.pool.acquire() as connection:
+            with connection.cursor() as cursor:
+                try:
+                    cursor.execute(
+                        "INSERT INTO PRODUCT_IMAGE_EMBEDDINGS (image_id, embedding) VALUES (:1, :2)",
+                        [image_id, embedding_array]
+                    )
+                    connection.commit()
                 except oracledb.DatabaseError as e:
                     print(f"Database error during insert: {e}")
                     connection.rollback()
@@ -65,7 +82,7 @@ class DatabaseService:
                     cursor.execute(
                         '''
                         SELECT image_id, VECTOR_DISTANCE(embedding, :1, COSINE) as distance
-                        FROM IMAGES
+                        FROM PRODUCT_IMAGE_EMBEDDINGS
                         ORDER BY distance
                         FETCH FIRST :2 ROWS ONLY
                         ''',
@@ -78,7 +95,6 @@ class DatabaseService:
                         similarity = 1 - distance
                         results.append({"id": image_id, "similarity": round(similarity, 4)})
                     
-                    print(f"Found {len(results)} similar images in database.")
                     return results
                 except oracledb.DatabaseError as e:
                     print(f"Database error during similarity search: {e}")
@@ -91,6 +107,3 @@ class DatabaseService:
 
 # Singleton instance
 database_service = DatabaseService()
-
-# It's good practice to close the pool when the application shuts down.
-# FastAPI has shutdown events where you can call database_service.close_pool()
