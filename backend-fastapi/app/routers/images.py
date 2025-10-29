@@ -33,15 +33,12 @@ async def upload_image(image: UploadFile = File(...)):
 @router.post("/upload-product-image", response_model=UploadResponse)
 async def upload_product_image(image: UploadFile = File(...)):
     """
-    Upload an image for similarity search
+    Upload a product image for storage and embedding storage
     
     - **image**: Image file (jpg, png, etc.)
     
-    Returns the image_id to use for fetching similar images
+    Returns the product image_id
     """
-    # Validate file type
-    # if not image.content_type.startswith("image/"):
-    #     raise HTTPException(status_code=400, detail="File must be an image")
     
     # Save image and get ID
     image_id = image_service.upload_product_image(
