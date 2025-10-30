@@ -3,8 +3,9 @@ from PIL import Image
 from typing import Optional
 import requests
 import io
+import os
 
-ML_SERVICE_URL = "http://localhost:3000"
+ML_SERVICE_URL = os.environ.get("ML_SERVICE_URL", "http://localhost:3000")
 
 
 class EmbeddingService:

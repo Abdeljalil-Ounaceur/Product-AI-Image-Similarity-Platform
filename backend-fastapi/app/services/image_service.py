@@ -10,7 +10,7 @@ from app.models.schemas import SimilarImage
 from app.services.embedding_service import embedding_service
 from app.services.database_service import database_service
 
-MINIO_ENDPOINT_URL = "http://localhost:9000"
+MINIO_ENDPOINT_URL = os.environ.get("MINIO_ENDPOINT_URL", "http://localhost:9000")
 
 class ImageService:
     """Service layer for image operations using MinIO and Database"""
@@ -25,7 +25,7 @@ class ImageService:
         )
         self.uploads_bucket_name = 'uploads'
         self.products_bucket_name = 'products'
-        self.base_url = 'http://localhost:9000'
+        self.base_url = MINIO_ENDPOINT_URL
 
     def _save_image_to_minio(self, file_body, unique_filename: str, bucket_name: str) -> str:
         """

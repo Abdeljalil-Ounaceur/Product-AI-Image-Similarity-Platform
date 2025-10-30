@@ -8,6 +8,7 @@ pydantic_settings
 bentoml>=1.2.0
 numpy>=1.21.0
 pillow>=9.0.0
+pillow-avif-plugin>=1.5.2
 requests>=2.25.0
 oracledb>=2.0.0
 boto3>=1.28.0
