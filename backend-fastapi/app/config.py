@@ -9,10 +9,7 @@ class Settings(BaseSettings):
     app_version: str = "0.1.0"
     
     # CORS Settings
-    cors_origins: list[str] = [
-        "http://localhost:3000",  # React dev server
-        "http://localhost:3001",
-    ]
+    cors_origins: list[str] = ["*"]
     
     # Future: Add settings for MinIO, ML model paths, etc.
     # minio_endpoint: str = "localhost:9000"
