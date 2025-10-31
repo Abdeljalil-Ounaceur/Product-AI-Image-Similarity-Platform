@@ -1,9 +1,7 @@
 import bentoml
 from PIL.Image import Image
 import numpy as np
-from typing import Dict
 from typing import List
-from pydantic import Field
 
 MODEL_ID = "openai/clip-vit-base-patch32"
 
@@ -11,30 +9,32 @@ runtime_image = bentoml.images.Image(
     python_version="3.11"
 ).requirements_file("requirements.txt")
 
-
 def _resize_img(img: Image):
     return img.resize((224, 224))
-
 
 @bentoml.service(
     image=runtime_image,
     resources={
-        "memory" : "2Gi"
+        "memory": "2Gi"
     }
 )
 class CLIP:
-
-    hf_model = bentoml.models.HuggingFaceModel(MODEL_ID)
+    # Use HuggingFaceModel instead of bentoml.transformers
+    model_path = bentoml.models.HuggingFaceModel(MODEL_ID)
     
     def __init__(self) -> None:
         import torch
         from transformers import CLIPModel, CLIPProcessor
+        
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
-        self.model = CLIPModel.from_pretrained(self.hf_model).to(self.device)
-        self.processor = CLIPProcessor.from_pretrained(self.hf_model)
+        
+        # Load from the HuggingFace model path
+        self.model = CLIPModel.from_pretrained(self.model_path).to(self.device)
+        self.processor = CLIPProcessor.from_pretrained(self.model_path)
+        
         self.logit_scale = self.model.logit_scale.item() if self.model.logit_scale.item() else 4.60517
-        print("Model clip loaded", "device:", self.device)
-
+        print("Model CLIP loaded", "device:", self.device)
+    
     @bentoml.api(batchable=True)
     async def encode_image(self, items: List[Image]) -> np.ndarray:
         '''
