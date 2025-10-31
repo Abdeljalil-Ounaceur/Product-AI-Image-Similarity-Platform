@@ -2,13 +2,15 @@ import boto3
 from botocore.exceptions import ClientError
 import json
 import os
+from dotenv import load_dotenv
+load_dotenv()
 
 if __name__ == "__main__":
     ENDPOINT_URL = os.environ.get("MINIO_ENDPOINT", "http://localhost:9000")
-    ACCESS_KEY   = os.environ.get("MINIO_ROOT_USER", "minioadmin")
-    SECRET_KEY   = os.environ.get("MINIO_ROOT_PASSWORD", "minioadmin")
-    UPLOADS_BUCKET_NAME  = os.environ.get("MINIO_UPLOADS_BUCKET", "uploads")
-    PRODUCTS_BUCKET_NAME  = os.environ.get("MINIO_PRODUCTS_BUCKET", "products")
+    ACCESS_KEY   = os.environ.get("MINIO_ROOT_USER","minioadmin")
+    SECRET_KEY   = os.environ.get("MINIO_ROOT_PASSWORD","minioadmin")
+    UPLOADS_BUCKET_NAME  = os.environ.get("MINIO_UPLOADS_BUCKET","uploads")
+    PRODUCTS_BUCKET_NAME  = os.environ.get("MINIO_PRODUCTS_BUCKET","products")
 
     s3_client = boto3.client(
         's3',
@@ -43,4 +45,4 @@ if __name__ == "__main__":
             Policy=json.dumps(policy)
         )
 
-    print("The buckets setup finiched successfully!")
+    print("The buckets setup finished successfully!")
