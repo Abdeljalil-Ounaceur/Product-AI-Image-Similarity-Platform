@@ -2,8 +2,11 @@ import os
 import requests
 import glob
 import mimetypes
+from dotenv import load_dotenv
 
-BASE_URL = "http://localhost:8000"
+load_dotenv()
+
+BASE_URL = os.environ.get("BASE_URL","http://localhost:8000")
 UPLOAD_URL = f"{BASE_URL}/api/upload-product-image"
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
