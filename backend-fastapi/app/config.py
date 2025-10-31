@@ -14,9 +14,6 @@ class Settings(BaseSettings):
     # Future: Add settings for MinIO, ML model paths, etc.
     # minio_endpoint: str = "localhost:9000"
     # model_path: str = "./models/clip-model"
-    
-    class Config:
-        env_file = ".env"
 
 
 settings = Settings()

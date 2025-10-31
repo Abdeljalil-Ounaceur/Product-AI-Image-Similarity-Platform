@@ -11,6 +11,9 @@ from app.services.embedding_service import embedding_service
 from app.services.database_service import database_service
 
 MINIO_ENDPOINT_URL = os.environ.get("MINIO_ENDPOINT_URL", "http://localhost:9000")
+AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID", "minioadmin")
+AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY", "minioadmin")
+REGION_NAME = os.environ.get("REGION_NAME", "us-east-1")
 
 class ImageService:
     """Service layer for image operations using MinIO and Database"""
@@ -19,9 +22,9 @@ class ImageService:
         self.s3_client = boto3.client(
             's3',
             endpoint_url=MINIO_ENDPOINT_URL,
-            aws_access_key_id='minioadmin',
-            aws_secret_access_key='minioadmin',
-            region_name='us-east-1'
+            aws_access_key_id=AWS_ACCESS_KEY_ID,
+            aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+            region_name=REGION_NAME
         )
         self.uploads_bucket_name = 'uploads'
         self.products_bucket_name = 'products'

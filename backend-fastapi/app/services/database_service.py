@@ -6,11 +6,11 @@ import array
 
 class DatabaseService:
     def __init__(self):
-        self.db_user = os.environ.get("DB_USER", "C##abdeljalil")
-        self.db_password = os.environ.get("DB_PASSWORD", "toor")
-        self.db_host = os.environ.get("DB_HOST", "localhost")
-        self.db_port = os.environ.get("DB_PORT", "1521")
-        self.db_service_name = os.environ.get("DB_SERVICE_NAME", "freepdb1")
+        self.db_user = os.environ.get("DB_USER","db_user")
+        self.db_password = os.environ.get("DB_PASSWORD","password")
+        self.db_host = os.environ.get("DB_HOST","localhost")
+        self.db_port = os.environ.get("DB_PORT","1521")
+        self.db_service_name = os.environ.get("DB_SERVICE_NAME","freepdb1")
         self.dsn = f"{self.db_host}:{self.db_port}/{self.db_service_name}"
         self.pool = self._create_pool()
 
