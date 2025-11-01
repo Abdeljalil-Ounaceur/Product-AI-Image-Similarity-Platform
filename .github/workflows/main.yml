@@ -12,13 +12,31 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install Python dependencies
+        run: pip install requests python-dotenv
+      
       - name: Build and start services
         run: docker compose -f docker-compose.ci.yml build && docker compose -f docker-compose.ci.yml up -d
       
-      - name: Wait and capture logs
+      - name: Wait for Oracle DB to be ready
         run: |
-          sleep 30
-          docker compose -f docker-compose.ci.yml logs ml-model
+          timeout 180 bash -c 'until docker compose -f docker-compose.ci.yml logs oracle-db | grep -q "DATABASE IS READY TO USE"; do sleep 5; done'
+      
+      - name: Show all logs
+        run: docker compose -f docker-compose.ci.yml logs
+      
+      - name: Populate database with products
+        run: python ./database-setup/populate_products.py
+        env:
+          BASE_URL: http://localhost:8000
+      
+      - name: Check ML model logs
+        run: docker compose -f docker-compose.ci.yml logs ml-model
       
       - name: Cleanup
         if: always()
