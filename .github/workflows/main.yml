@@ -29,11 +29,20 @@ jobs:
       
       - name: Show all logs
         run: docker compose -f docker-compose.ci.yml logs
+
+      - name: Check backend logs before population
+        run: docker compose -f docker-compose.ci.yml logs backend
       
       - name: Populate database with products
         run: python ./database-setup/populate_products.py
         env:
           BASE_URL: http://localhost:8000
+
+      - name: Check backend logs after population attempt
+        if: always()
+        run: docker compose -f docker-compose.ci.yml logs backend
+
+
       
       - name: Check ML model logs
         run: docker compose -f docker-compose.ci.yml logs ml-model
