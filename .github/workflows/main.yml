@@ -19,4 +19,4 @@ jobs:
           up-flags: "--build"
           down-flags: "--volumes"
           test-container: "ml-model"
-          test-command: "cd /app && curl -s -X POST -F 'items=@demo.jpg' http://localhost:3000/encode_image"
+          test-command: "apt update && apt install curl && curl -s -X POST -F 'items=@/app/demo.jpg' http://localhost:3000/encode_image"
