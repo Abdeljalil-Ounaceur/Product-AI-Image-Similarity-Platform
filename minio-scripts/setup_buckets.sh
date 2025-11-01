@@ -29,4 +29,11 @@ create_bucket_if_not_exists() {
 create_bucket_if_not_exists $MINIO_UPLOADS_BUCKET
 create_bucket_if_not_exists $MINIO_PRODUCTS_BUCKET
 
-echo "Bucket setup completed."
+# Set public read policy for both buckets
+echo "Setting public policy for bucket: $MINIO_UPLOADS_BUCKET"
+mc anonymous set public $MINIO_ALIAS/$MINIO_UPLOADS_BUCKET
+
+echo "Setting public policy for bucket: $MINIO_PRODUCTS_BUCKET"
+mc anonymous set public $MINIO_ALIAS/$MINIO_PRODUCTS_BUCKET
+
+echo "Bucket setup completed with public policies for both uploads and products."
