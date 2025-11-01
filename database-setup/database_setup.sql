@@ -2,6 +2,22 @@ BEGIN
     -- Switch to FREEPDB1 container
     EXECUTE IMMEDIATE 'ALTER SESSION SET CONTAINER = FREEPDB1';
 
+    -- Create USERS tablespace if it doesn't exist
+    BEGIN
+        EXECUTE IMMEDIATE '
+        CREATE TABLESPACE USERS
+        DATAFILE ''/opt/oracle/oradata/FREE/FREEPDB1/users01.dbf''
+        SIZE 100M
+        AUTOEXTEND ON
+        NEXT 10M
+        MAXSIZE UNLIMITED';
+    EXCEPTION
+        WHEN OTHERS THEN
+            IF SQLCODE != -1543 THEN  -- Ignore tablespace already exists error
+                RAISE;
+            END IF;
+    END;
+
     -- Create user db_user with password and unlimited quota on USERS tablespace
     BEGIN
         EXECUTE IMMEDIATE 'CREATE USER db_user IDENTIFIED BY password DEFAULT TABLESPACE USERS QUOTA UNLIMITED ON USERS';
