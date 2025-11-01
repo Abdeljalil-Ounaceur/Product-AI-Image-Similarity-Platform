@@ -2,7 +2,7 @@
 
 # MinIO server and client alias
 MINIO_ALIAS="localminio"
-MINIO_ENDPOINT="http://localhost:9000"
+MINIO_ENDPOINT=${MINIO_ENDPOINT:-"http://localhost:9000"}
 MINIO_ACCESS_KEY=${MINIO_ACCESS_KEY:-minioadmin}
 MINIO_SECRET_KEY=${MINIO_SECRET_KEY:-minioadmin}
 MINIO_UPLOADS_BUCKET=${MINIO_UPLOADS_BUCKET:-uploads}

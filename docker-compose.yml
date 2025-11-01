@@ -7,12 +7,14 @@ services:
       context: ./backend-fastapi
     ports:
       - "8000:8000"
-    volumes:
-      - ./backend-fastapi/app:/app/app
+    depends_on:
+      - ml-model
+      - minio
+      - oracle-db
     environment:
       ML_SERVICE_URL: http://ml-model:3000
-      MINIO_ENDPOINT_URL: http://192.168.1.11:9000
-      DB_HOST: 192.168.1.11
+      MINIO_ENDPOINT_URL: http://minio:9000
+      DB_HOST: oracle-db
       DB_USER: db_user
       DB_PASSWORD: password
       DB_PORT: 1521
@@ -31,25 +33,40 @@ services:
 
   ml-model:
     image: bento-clip:latest
+    build:
+      context: ./ml-model-service
     ports:
       - "3000:3000"
 
-  # minio:
-  #   image: minio/minio:latest
-  #   ports:
-  #     - "9000:9000"
-  #     - "9001:9001"
-  #   volumes:
-  #     - C:/MinIOData:/data
-  #     - ${DIR_PATH}/minio-scripts/setup.sh:/usr/local/bin/setup.sh:ro
-  #   command: server /data --console-address ":9001"
+  minio:
+    image: minio/minio:latest
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - C:/MinIOData:/data
+    command: server /data --console-address ":9001"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
-  # oracle-db:
-  #   image: container-registry.oracle.com/database/free:latest-lite
-  #   ports:
-  #     - "1521:1521"
-  #   environment:
-  #     ORACLE_PWD: password
-  #   volumes:
-  #     - C:/oracle_data:/opt/oracle/oradata
-  #     - ${DIR_PATH}/database-setup:/opt/oracle/scripts/startup
+  minio-setup:
+    image: minio/mc:latest
+    depends_on:
+      minio:
+        condition: service_healthy
+    volumes:
+      - ${DIR_PATH}/minio-scripts/setup_buckets.sh:/setup.sh:ro
+    entrypoint: /bin/sh /setup.sh
+    environment:
+      MINIO_ENDPOINT: http://minio:9000
+
+  oracle-db:
+    image: container-registry.oracle.com/database/free:latest-lite
+    ports:
+      - "1521:1521"
+    volumes:
+      - C:/oracle_data:/opt/oracle/oradata
+      - ${DIR_PATH}/database-setup:/opt/oracle/scripts/startup
