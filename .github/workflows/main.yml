@@ -18,5 +18,5 @@ jobs:
           compose-file: "./docker-compose.ci.yml"
           up-flags: "--build"
           down-flags: "--volumes"
-          test-container: "frontend-react"
+          test-container: "frontend"
           test-command: "curl -s -X POST -F 'items=@/app/public/mock-images/anime.png' http://localhost:3000/encode_image"
