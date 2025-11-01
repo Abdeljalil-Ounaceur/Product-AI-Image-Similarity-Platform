@@ -1,6 +1,7 @@
-# Product similarity platform image embedding service
-this microservice is for calculating embeddings using a machine learning model (OpenAI CLIP) for image similarity
+# Product Similarity Platform Image Embedding Service
 
-TODO:
-- [x] Create a service that can mainstream the model locally for image embedding
-- [ ] Create a Dokerfile to containerise this microservice
+This microservice is for calculating embeddings using a machine learning model (OpenAI CLIP) for image similarity.
+
+It uses BentoML to serve the model.
+
+This service is containerized and can be run with Docker Compose.

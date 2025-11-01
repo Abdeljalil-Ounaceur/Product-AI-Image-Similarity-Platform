@@ -1,6 +1,7 @@
-# Product similarity platform object storage service
-this microservice is for storing and high speed retrieval of objects such as images or documents
+# Product Similarity Platform Object Storage Service
 
-TODO:
-- [x] Create scripts to create buckets necessary for storing images
-- [ ] Create a Dokerfile to containerise this microservice
+This microservice is for storing and retrieving objects such as images or documents at high speed.
+
+It uses Minio, an open-source object storage server.
+
+This service is containerized and can be run with Docker Compose.
