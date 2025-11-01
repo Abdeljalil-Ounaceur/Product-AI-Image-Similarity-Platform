@@ -10,6 +10,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy your application code
 COPY service.py .
 COPY download_model.py .
+COPY demo.jpg .
 
 # Run the download script. This will download the model to the cache directory
 # defined by the TRANSFORMERS_CACHE environment variable.
