@@ -1,0 +1,22 @@
+name: Microservices Tests
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: adambirds/docker-compose-action@v1.5.0
+        with:
+          compose-file: "./docker/docker-compose.ci.yml"
+          up-flags: "--build"
+          down-flags: "--volumes"
+          test-container: "ml-model"
+          test-command: "cd /app && curl -s -X POST -F 'items=@demo.jpg' http://localhost:3000/encode_image"
