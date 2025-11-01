@@ -19,4 +19,4 @@ jobs:
           up-flags: "--build"
           down-flags: "--volumes"
           test-container: "frontend"
-          test-command: "curl -s -X POST -F 'items=@/app/public/mock-images/anime.png' http://localhost:3000/encode_image"
+          test-command: "curl -s -X POST -F 'items=@/app/public/mock-images/anime.png' http://ml-model:3000/encode_image"
