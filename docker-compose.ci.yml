@@ -7,8 +7,6 @@ services:
       context: ./backend-fastapi
     ports:
       - "8000:8000"
-    volumes:
-      - ./backend-fastapi/app:/app/app
     environment:
       ML_SERVICE_URL: http://ml-model:3000
       MINIO_ENDPOINT_URL: http://ml-model:9000
@@ -31,25 +29,27 @@ services:
 
   ml-model:
     image: bento-clip:latest
+    build:
+      context: ./ml-model-service
     ports:
       - "3000:3000"
 
-  minio:
-    image: minio/minio:latest
-    ports:
-      - "9000:9000"
-      - "9001:9001"
-    volumes:
-      - C:/MinIOData:/data
-      - ./minio-scripts/setup.sh:/usr/local/bin/setup.sh:ro
-    command: server /data --console-address ":9001"
+  # minio:
+  #   image: minio/minio:latest
+  #   ports:
+  #     - "9000:9000"
+  #     - "9001:9001"
+  #   volumes:
+  #     - /data/MinIOData:/data
+  #     - ./minio-scripts/setup.sh:/usr/local/bin/setup.sh:ro
+  #   command: server /data --console-address ":9001"
 
-  oracle-db:
-    image: container-registry.oracle.com/database/free:latest-lite
-    ports:
-      - "1521:1521"
-    environment:
-      ORACLE_PWD: password
-    volumes:
-      - C:/oracle_data:/opt/oracle/oradata
-      - ./database-setup:/opt/oracle/scripts/startup
+  # oracle-db:
+  #   image: container-registry.oracle.com/database/free:latest-lite
+  #   ports:
+  #     - "1521:1521"
+  #   environment:
+  #     ORACLE_PWD: password
+  #   volumes:
+  #     - /data/oracle_data:/opt/oracle/oradata
+  #     - ./database-setup:/opt/oracle/scripts/startup
