@@ -44,7 +44,7 @@ All services are containerized and can be orchestrated with Docker Compose.
 
 3.  **Access the application:**
 
-    Open your browser and go to `http://localhost:3000` to use the application.
+    Open your browser and go to `http://localhost:80` to use the application.
 
 ## Milestones
 
