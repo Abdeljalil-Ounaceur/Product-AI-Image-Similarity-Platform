@@ -5,10 +5,6 @@ services:
       context: ./backend-fastapi
     ports:
       - "8000:8000"
-    depends_on:
-      - ml-model
-      - minio
-      - oracle-db
     environment:
       ML_SERVICE_URL: http://ml-model:3000
       MINIO_ENDPOINT_URL: http://minio:9000
