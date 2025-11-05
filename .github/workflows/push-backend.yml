@@ -1,4 +1,4 @@
-name: Build and Push Docker Image
+name: Build and Push Backend Docker Image
 
 on:
   push:
@@ -31,4 +31,4 @@ jobs:
           context: ./backend-fastapi
           file: ./backend-fastapi/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/frontend:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/ai-image-similarity-backend:latest

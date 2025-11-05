@@ -6,4 +6,4 @@ This service is containerized and can be run with Docker Compose.
 
 ## To-Do
 
--   [ ] Polish the frontend with a better User Interface and more meaningful look.
+-   [ ] Polish the frontend with a better UI and more meaningful look.

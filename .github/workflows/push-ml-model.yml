@@ -1,11 +1,11 @@
-name: Build and Push Frontend Docker Image
+name: Build and Push Ml-Model Docker Image
 
 on:
   push:
     branches:
       - main
     paths:
-      - frontend-react/**
+      - ml-model-service/**
   workflow_dispatch:
 
 jobs:
@@ -28,7 +28,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
-          context: ./frontend-react
-          file: ./frontend-react/Dockerfile
+          context: ./ml-model-service
+          file: ./ml-model-service/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/ai-image-similarity-frontend:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/ai-image-similarity-ml-service:latest
