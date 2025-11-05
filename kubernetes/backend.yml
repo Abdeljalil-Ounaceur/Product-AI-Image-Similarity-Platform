@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend
+        image: backend-fastapi
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8000
+        env:
+        - name: ML_SERVICE_URL
+          value: "http://ml-model:3000"
+        - name: MINIO_ENDPOINT_URL
+          value: "http://minio:9000"
+        - name: DB_HOST
+          value: "oracle-db"
+        - name: DB_PORT
+          value: "1521"
+        - name: DB_SERVICE_NAME
+          value: "freepdb1"
+        # NOTE: In a production environment, you should use Kubernetes Secrets
+        # to manage sensitive data like database credentials.
+        - name: DB_USER
+          value: "db_user"
+        - name: DB_PASSWORD
+          value: "password"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+spec:
+  type: LoadBalancer
+  selector:
+    app: backend
+  ports:
+  - protocol: TCP
+    port: 8000
+    targetPort: 8000
