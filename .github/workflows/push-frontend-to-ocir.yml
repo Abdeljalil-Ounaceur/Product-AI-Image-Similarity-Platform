@@ -2,17 +2,17 @@ name: Build and Push Frontend Docker Image to OCIR
 
 on:
   push:
-    tags:
-      - OCIR
   workflow_dispatch:
 
 env:
   OCIR_REGION: iad
+  OCIR_NAMESPACE: abdeljalilounaceurwork
   OCIR_REGISTRY: iad.ocir.io
   IMAGE_NAME: ai-image-similarity-frontend
 
 jobs:
   build-and-push:
+    if: contains(github.event.head_commit.message, 'OCIR-PUSH')
     runs-on: ubuntu-latest
 
     steps:
@@ -36,10 +36,10 @@ jobs:
           file: ./frontend-react/Dockerfile
           push: true
           tags: |
-            ${{ env.OCIR_REGISTRY }}/${{ secrets.OCIR_NAMESPACE }}/${{ env.IMAGE_NAME }}:latest
-            ${{ env.OCIR_REGISTRY }}/${{ secrets.OCIR_NAMESPACE }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+            ${{ env.OCIR_REGISTRY }}/${{ env.OCIR_NAMESPACE }}/${{ env.IMAGE_NAME }}:latest
+            ${{ env.OCIR_REGISTRY }}/${{ env.OCIR_NAMESPACE }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
       - name: Image pushed successfully
-        run: echo "Image pushed to ${{ env.OCIR_REGISTRY }}/${{ secrets.OCIR_NAMESPACE }}/${{ env.IMAGE_NAME }}:latest"
+        run: echo "Image pushed to ${{ env.OCIR_REGISTRY }}/${{ env.OCIR_NAMESPACE }}/${{ env.IMAGE_NAME }}:latest"
