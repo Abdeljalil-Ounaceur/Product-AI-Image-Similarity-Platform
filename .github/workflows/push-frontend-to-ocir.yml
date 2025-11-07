@@ -2,6 +2,8 @@ name: Build and Push Frontend Docker Image to OCIR
 
 on:
   push:
+    branches:
+      - main
   workflow_dispatch:
 
 env:
