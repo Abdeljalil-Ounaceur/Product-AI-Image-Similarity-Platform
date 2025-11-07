@@ -1,4 +1,4 @@
-# Product Similarity Platform Backend FastAPI
+# Product Similarity Platform Backend FastAPI 
 
 This microservice is the backend of the platform, built with FastAPI.
 
