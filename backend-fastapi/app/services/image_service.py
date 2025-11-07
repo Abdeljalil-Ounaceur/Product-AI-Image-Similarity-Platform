@@ -32,21 +32,23 @@ class ImageService:
 
     def _save_image_to_minio(self, file_body, unique_filename: str, bucket_name: str) -> str:
         """
-        Save image object to MinIO/Oracle Object Storage and return image_id (the S3 key)
+        Save image object to Oracle Object Storage (S3-compatible) and return image_id (the S3 key)
         """
         # Ensure the stream is at the beginning
-        file_body.seek(0, io.SEEK_END)
-        size = file_body.tell()
         file_body.seek(0)
+        data = file_body.read()
+        size = len(data)
 
         self.s3_client.put_object(
             Bucket=bucket_name,
             Key=unique_filename,
-            Body=file_body,
+            Body=data,  # send as bytes, not as stream
             ContentType='image/jpeg',
-            ContentLength=size  # <-- required by Oracle S3-compatible API
+            ContentLength=size,  # required by Oracle S3-compatible API
         )
+
         return unique_filename
+
 
 
     def _process_and_standardize_image(self, file_stream, original_filename: str):
