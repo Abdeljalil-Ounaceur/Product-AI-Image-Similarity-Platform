@@ -16,6 +16,8 @@ COPY . .
 # Build the application
 RUN npm run build
 
+
+
 # Stage 2: Serve the application with Nginx
 FROM nginx:stable-alpine
 

@@ -14,8 +14,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: frontend-react
-        imagePullPolicy: Never  
+        image: docker.io/abdeljalil2003ounaceur/ai-image-similarity-frontend-oke
         ports:
         - containerPort: 80
         env:

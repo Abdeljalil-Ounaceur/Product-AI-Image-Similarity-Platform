@@ -1,4 +1,4 @@
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+const API_BASE_URL = 'http://129.158.58.247:8000';
 
 /**
  * Upload an image to the backend for processing
