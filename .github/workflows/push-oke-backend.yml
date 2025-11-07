@@ -1,4 +1,4 @@
-name: Build and Push OKE Frontend Docker Image
+name: Build and Push OKE Backend Docker Image
 
 on:
   push:
@@ -31,4 +31,4 @@ jobs:
           context: ./frontend-react
           file: ./frontend-react/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/ai-image-similarity-frontend-oke:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/ai-image-similarity-backend-oke:latest

@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: docker.io/abdeljalil2003ounaceur/ai-image-similarity-backend
+        image: docker.io/abdeljalil2003ounaceur/ai-image-similarity-backend-oke
         ports:
         - containerPort: 8000
         env:
