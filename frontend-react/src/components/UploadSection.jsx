@@ -2,10 +2,10 @@ import React, { useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 
 const SAMPLE_IMAGES = [
-  { name: 'Dada Style', path: '/mock-images/a man riding a horse dada.png' },
-  { name: 'Studio Ghibli', path: '/mock-images/a man riding a horse studio ghibli.png' },
-  { name: 'Anime Style', path: '/mock-images/anime.png' },
-  { name: 'Cinematic', path: '/mock-images/cinematic.png' },
+  { name: 'shoes', path: '/mock-images/product1.jpg' },
+  { name: 'jacket', path: '/mock-images/product2.jpg' },
+  { name: 'dress', path: '/mock-images/product3.jpg' },
+  { name: 'hat', path: '/mock-images/product4.webp' },
 ];
 
 const UploadSection = ({ onSubmit, onReset, hasResults, uploadedImageUrl }) => {
