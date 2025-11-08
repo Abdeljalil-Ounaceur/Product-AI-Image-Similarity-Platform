@@ -1,4 +1,4 @@
-name: Build and Push OKE Frontend Docker Image
+name: Build and Push OKE Postgres Docker Image
 
 on:
   push:
@@ -28,7 +28,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
-          context: ./frontend-react
+          context: ./database-setup/alternatives/postgres
           file: ./database-setup/alternatives/postgres/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/ai-image-similarity-postgres-oke:latest

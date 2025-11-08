@@ -1,4 +1,4 @@
--- Enable pgvector
+-- Enable pgvector 
 CREATE EXTENSION IF NOT EXISTS vector;
 
 -- Create user (if not exists, ignore errors)
