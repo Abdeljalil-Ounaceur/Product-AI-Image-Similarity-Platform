@@ -8,7 +8,12 @@ from fastapi import HTTPException
 from typing import List
 from app.models.schemas import SimilarImage
 from app.services.embedding_service import embedding_service
-from app.services.database_service import database_service
+
+if os.environ.get("ALT_DATABASE"):
+    print("Using alternative database...")
+    from app.services.alternatives.postgres_service import database_service
+else:
+    from app.services.database_service import database_service
 
 from botocore.client import Config
 import base64
