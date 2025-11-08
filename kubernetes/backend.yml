@@ -34,6 +34,8 @@ spec:
           value: "db_user"
         - name: DB_PASSWORD
           value: "password"
+        - name: ALT_DATABASE
+          value: True
 ---
 apiVersion: v1
 kind: Service
