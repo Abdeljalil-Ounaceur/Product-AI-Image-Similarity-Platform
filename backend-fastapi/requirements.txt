@@ -15,4 +15,4 @@ boto3>=1.28.0
 python-dotenv
 requests-aws4auth
 pgvector
-psycopg2
+psycopg2-binary
