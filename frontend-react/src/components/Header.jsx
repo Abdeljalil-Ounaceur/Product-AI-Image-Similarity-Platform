@@ -58,7 +58,7 @@ const Header = () => {
               </div>
               <div className="bg-slate-900 rounded-lg p-8 flex items-center justify-center min-h-[400px]">
                 <img 
-                  src="/mock-images/a man riding a horse dada.png" 
+                  src="/assets/microservices_architecture.png" 
                   alt="System Architecture Diagram"
                   className="max-w-full max-h-[500px] object-contain rounded-lg"
                 />
