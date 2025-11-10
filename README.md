@@ -2,6 +2,12 @@
 
 This project provides a platform for finding products based on image similarity. It's built with a microservices architecture and is fully containerized with Docker for portability and ease of use.
 
+## Demo
+
+![Product Image Similarity Platform Demo](assets/demo.gif)
+
+**Live Demo Public Link:** _Coming soon!_
+
 ## Architecture
 
 The platform is composed of five services that work together:
@@ -9,10 +15,14 @@ The platform is composed of five services that work together:
 -   **Frontend (React):** A single-page application that allows users to upload an image and view similar products.
 -   **Backend (FastAPI):** A Python-based backend that handles API requests, communicates with other services, and serves the frontend.
 -   **ML Model Service (BentoML):** A service that uses the OpenAI CLIP model to generate embeddings for images.
--   **Minio:** An object storage service for storing and retrieving product images.
+-   **Minio (AWS compatible):** An object storage service for storing and retrieving product images.
 -   **Database (Oracle):** An Oracle database for storing product information and image embeddings.
 
 All services are containerized and can be orchestrated with Docker Compose.
+
+### System Architecture Diagram
+
+<img src="assets/docker_compose_architecture.png" alt="System Architecture" width="60%">
 
 ## Getting Started
 
@@ -51,9 +61,12 @@ All services are containerized and can be orchestrated with Docker Compose.
 -   Implemented 5 core services (Frontend, Backend, ML Model, Minio, Database).
 -   Dockerized all services for containerization and orchestration.
 -   Implemented GitHub Workflows for automated testing.
-
-## Future Enhancements
-
 -   Polish the frontend with a better UI and more meaningful look.
 -   Use Kubernetes for scaling the application.
 -   Add more comprehensive tests for all services.
+
+## Future Enhancements
+
+-   Add a public link for testing the app.
+-   Add a more product images.
+-   Add textual search.
